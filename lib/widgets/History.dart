@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:money_manager/theme.dart';
 
 class History extends StatelessWidget {
-  final bool? isIncome;
-  final String? title;
-  final String? date;
-  final int? money;
+  final bool isSpending;
+  final String title;
+  final String dateTransaction;
+  final int cash;
 
   String? urlImage;
   String? operator;
 
-  formatTransaction(income) {
-    if (!income) {
+  formatTransaction(isSpending) {
+    if (isSpending) {
       urlImage = 'assets/img/down.png';
       operator = '-';
       return;
@@ -19,15 +19,19 @@ class History extends StatelessWidget {
 
     urlImage = 'assets/img/up.png';
     operator = '+';
-
     return;
   }
 
-  History({this.isIncome, this.title, this.date, this.money});
+  History(
+      {required this.isSpending,
+      required this.title,
+      required this.dateTransaction,
+      required this.cash});
 
   @override
   Widget build(BuildContext context) {
-  formatTransaction(isIncome);
+    formatTransaction(isSpending);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -39,14 +43,14 @@ class History extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title!,
+              title,
               style: darkBlueTextStyle.copyWith(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Text(
-              date!,
+              dateTransaction,
               style: greyTextStyle.copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
@@ -56,7 +60,7 @@ class History extends StatelessWidget {
         ),
         SizedBox(width: 100),
         Text(
-          '$operator ${money!.toString()}',
+          '$operator $cash',
           style: darkBlueTextStyle.copyWith(
             fontSize: 13,
             fontWeight: FontWeight.w600,

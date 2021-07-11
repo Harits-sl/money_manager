@@ -1,170 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager/utils/date_format.dart';
 import 'package:money_manager/theme.dart';
+import 'package:money_manager/utils/parse.dart';
 import 'package:money_manager/widgets/History.dart';
-import 'package:money_manager/widgets/finance.dart';
+import 'package:money_manager/widgets/Finance.dart';
+import 'package:money_manager/widgets/header.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    height: 215,
-                    decoration: BoxDecoration(
-                      color: blueColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(40),
-                        bottomRight: Radius.circular(40),
-                      ),
-                    ),
-                  ),
-                  SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 25, left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Welcome,',
-                            style: whiteTextStyle.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Harits',
-                            style: whiteTextStyle.copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 18),
-                          Finance(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              Center(
-                child: Text(
-                  'Transaction History',
-                  style: darkBlueTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              SizedBox(height: 32),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    History(
-                        isIncome: true,
-                        title: 'Success!',
-                        date: 'February 20, 02:45 PM',
-                        money: 100000),
-                    SizedBox(height: 15),
-                    History(
-                        isIncome: true,
-                        title: 'Success!',
-                        date: 'February 20, 02:45 PM',
-                        money: 100000),
-                    SizedBox(height: 15),
-                    History(
-                        isIncome: false,
-                        title: 'Buy drink',
-                        date: 'February 20, 02:45 PM',
-                        money: 50000),
-                    SizedBox(height: 15),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: FractionalOffset(0.0, 0.9),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(redColor),
-                            minimumSize:
-                                MaterialStateProperty.all(Size(140, 46)),
-                          ),
-                          onPressed: () {
-                            buildShowModalBottomSheet(context);
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/img/spending.png',
-                                width: 23,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                'Spending',
-                                style: darkBlueTextStyle.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(greenColor),
-                            minimumSize:
-                                MaterialStateProperty.all(Size(140, 46)),
-                          ),
-                          onPressed: () {
-                            buildShowModalBottomSheet(context);
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/img/income.png',
-                                width: 23,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                'Income',
-                                style: darkBlueTextStyle.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // variable for textfield
+  TextEditingController _transactionController = TextEditingController();
+  TextEditingController _cashController = TextEditingController();
+
+  List<dynamic> historyList = [];
+
+  // variable for send to historyList
+  int _spending = 0;
+  int _income = 0;
+  int _cash = 0;
+  String _title = '';
+  String _dateTransaction = dateFormat();
+
+  // method for modal
+  void closeModal() {
+    _transactionController.clear();
+    _cashController.clear();
+    Navigator.pop(context);
   }
 
-  Future<dynamic> buildShowModalBottomSheet(BuildContext context) {
+  void confirmModal(bool _isSpending) {
+    setState(() {
+      _title = _transactionController.text;
+      int cashParse = parseToInt(_cashController.text);
+
+      if (_isSpending) {
+        _cash = cashParse;
+        _spending += cashParse;
+      } else {
+        _cash = cashParse;
+        _income += cashParse;
+      }
+    });
+    historyList.add({
+      'isSpending': _isSpending,
+      'title': _title,
+      'dateTransaction': _dateTransaction,
+      'cash': _cash,
+    });
+    print(historyList);
+    closeModal();
+  }
+  // end method modal
+
+  Future<dynamic> buildShowModalBottomSheet(
+      BuildContext context, bool _isSpending) {
     return showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -184,6 +77,8 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               TextFormField(
+                controller: _transactionController,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter your transaction',
@@ -191,13 +86,13 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // TODO: change label text and hint text
               TextFormField(
+                controller: _cashController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Enter your transaction',
-                  hintText: 'Order a food',
+                  labelText: 'Enter your cash',
+                  hintText: '120000',
                 ),
               ),
               Expanded(
@@ -219,7 +114,9 @@ class HomePage extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          closeModal();
+                        },
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
@@ -237,7 +134,9 @@ class HomePage extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          confirmModal(_isSpending);
+                        },
                       ),
                     ],
                   ),
@@ -247,6 +146,118 @@ class HomePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Header(spending: _spending, income: _income),
+            SizedBox(height: 30),
+            Center(
+              child: Text(
+                'Transactions History',
+                style: darkBlueTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Container(
+              height: 400,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: historyList.length,
+                itemBuilder: (context, index) {
+                  var data = historyList[index];
+                  return Column(
+                    children: [
+                      History(
+                        isSpending: data['isSpending'],
+                        title: data['title'],
+                        dateTransaction: data['dateTransaction'],
+                        cash: data['cash'],
+                      ),
+                      SizedBox(height: 15),
+                    ],
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset(0.0, 0.5),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(redColor),
+                          minimumSize: MaterialStateProperty.all(Size(140, 46)),
+                        ),
+                        onPressed: () {
+                          buildShowModalBottomSheet(context, true);
+                        },
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/img/spending.png',
+                              width: 23,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Spending',
+                              style: darkBlueTextStyle.copyWith(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(greenColor),
+                          minimumSize: MaterialStateProperty.all(Size(140, 46)),
+                        ),
+                        onPressed: () {
+                          buildShowModalBottomSheet(context, false);
+                        },
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/img/income.png',
+                              width: 23,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Income',
+                              style: darkBlueTextStyle.copyWith(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
