@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:money_manager/theme.dart';
-import 'package:money_manager/widgets/Finance.dart';
+import 'package:money_manager/widgets/finance_statement.dart';
 
 class Header extends StatelessWidget {
   final int spending;
@@ -28,7 +28,7 @@ class Header extends StatelessWidget {
         ),
         SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 25, left: 20),
+            padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,8 +47,8 @@ class Header extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 18),
-                Finance(currentSpending: spending, currentIncome: income),
+                SizedBox(height: 20),
+                FinanceStatement(spending: spending, income: income),
               ],
             ),
           ),

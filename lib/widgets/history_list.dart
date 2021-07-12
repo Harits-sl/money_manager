@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/theme.dart';
 
-class History extends StatelessWidget {
+class HistoryList extends StatelessWidget {
   final bool isSpending;
   final String title;
   final String dateTransaction;
@@ -22,7 +22,7 @@ class History extends StatelessWidget {
     return;
   }
 
-  History(
+  HistoryList(
       {required this.isSpending,
       required this.title,
       required this.dateTransaction,
@@ -39,26 +39,29 @@ class History extends StatelessWidget {
           urlImage!,
           width: 30,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: darkBlueTextStyle.copyWith(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+        SizedBox(width: 15),
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: darkBlueTextStyle.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            Text(
-              dateTransaction,
-              style: greyTextStyle.copyWith(
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
+              Text(
+                dateTransaction,
+                style: greyTextStyle.copyWith(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(width: 100),
         Text(
           '$operator $cash',
           style: darkBlueTextStyle.copyWith(

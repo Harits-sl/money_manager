@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'package:money_manager/theme.dart';
 
-class Finance extends StatelessWidget {
-  final int currentSpending;
-  final int currentIncome;
+class FinanceStatement extends StatelessWidget {
+  final int spending;
+  final int income;
 
-  Finance({
-    required this.currentSpending,
-    required this.currentIncome,
+  FinanceStatement({
+    required this.spending,
+    required this.income,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      width: 320,
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.all(
@@ -54,7 +53,7 @@ class Finance extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    'Rp. $currentSpending',
+                    'Rp. $spending',
                     style: darkRedTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -77,7 +76,7 @@ class Finance extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    'Rp. $currentIncome',
+                    'Rp. $income',
                     style: darkGreenTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

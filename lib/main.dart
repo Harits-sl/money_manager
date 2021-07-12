@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:money_manager/pages/HomePage.dart';
+import 'package:money_manager/pages/home_page.dart';
 import 'package:money_manager/theme.dart';
 
 void main() => runApp(MyApp());
