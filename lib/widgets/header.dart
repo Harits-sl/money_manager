@@ -4,11 +4,13 @@ import 'package:money_manager/theme.dart';
 import 'package:money_manager/widgets/finance_statement.dart';
 
 class Header extends StatelessWidget {
-  final int spending;
+  final String name;
+  final int expense;
   final int income;
 
   const Header({
-    required this.spending,
+    required this.name,
+    required this.expense,
     required this.income,
   });
 
@@ -35,20 +37,20 @@ class Header extends StatelessWidget {
                 Text(
                   'Welcome,',
                   style: whiteTextStyle.copyWith(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Harits',
+                  name,
                   style: whiteTextStyle.copyWith(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: 20),
-                FinanceStatement(spending: spending, income: income),
+                FinanceStatement(expense: expense, income: income),
               ],
             ),
           ),

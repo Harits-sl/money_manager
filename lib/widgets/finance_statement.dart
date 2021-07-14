@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:money_manager/theme.dart';
+import 'package:money_manager/utils/currency.dart';
 
 class FinanceStatement extends StatelessWidget {
-  final int spending;
+  final int expense;
   final int income;
 
   FinanceStatement({
-    required this.spending,
+    required this.expense,
     required this.income,
   });
 
@@ -45,7 +46,7 @@ class FinanceStatement extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    'Spending',
+                    'Expense',
                     style: darkBlueTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
@@ -53,7 +54,7 @@ class FinanceStatement extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    'Rp. $spending',
+                    'Rp. ${currencyFormat(expense)}',
                     style: darkRedTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -76,7 +77,7 @@ class FinanceStatement extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    'Rp. $income',
+                    'Rp. ${currencyFormat(income)}',
                     style: darkGreenTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_manager/theme.dart';
 
 class HistoryList extends StatelessWidget {
-  final bool isSpending;
+  final bool isIncome;
   final String title;
   final String dateTransaction;
   final int cash;
@@ -10,8 +10,8 @@ class HistoryList extends StatelessWidget {
   String? urlImage;
   String? operator;
 
-  formatTransaction(isSpending) {
-    if (isSpending) {
+  formatTransaction(isIncome) {
+    if (!isIncome) {
       urlImage = 'assets/img/down.png';
       operator = '-';
       return;
@@ -23,14 +23,14 @@ class HistoryList extends StatelessWidget {
   }
 
   HistoryList(
-      {required this.isSpending,
+      {required this.isIncome,
       required this.title,
       required this.dateTransaction,
       required this.cash});
 
   @override
   Widget build(BuildContext context) {
-    formatTransaction(isSpending);
+    formatTransaction(isIncome);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
